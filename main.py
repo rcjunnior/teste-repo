@@ -235,9 +235,18 @@ tabela = perf.rename(columns={
     "A fazer":              "📌 A fazer",
 })[["Funcionário", "Total", "✅ Finalizada", "⏰ Em atraso", "🔴 Atrasada", "📌 A fazer", "Eficiência"]]
 
+def cor_eficiencia(val):
+    if val >= 0.6:
+        return "background-color: #d5f5e3; color: #1a7a3c; font-weight: 600"
+    elif val >= 0.4:
+        return "background-color: #fdebd0; color: #a04000; font-weight: 600"
+    else:
+        return "background-color: #fadbd8; color: #922b21; font-weight: 600"
+
 st.dataframe(
-    tabela.style.format({"Eficiência": "{:.0%}"})
-          .background_gradient(subset=["Eficiência"], cmap="RdYlGn", vmin=0, vmax=1),
+    tabela.style
+          .format({"Eficiência": "{:.0%}"})
+          .applymap(cor_eficiencia, subset=["Eficiência"]),
     use_container_width=True,
     hide_index=True,
 )
